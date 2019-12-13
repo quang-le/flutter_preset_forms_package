@@ -1,3 +1,4 @@
+import 'package:preset_form_fields/src/utils/helpers.dart';
 import 'package:preset_form_fields/src/utils/sanitize.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,27 +13,11 @@ class NameInputFormatter extends TextInputFormatter {
     exceptions = _partialParticleMatches(keepLowerCase);
   }
 
+  NameInputFormatterHelpers helpers;
   List<String> exceptions;
 
-  List<String> _partialParticleMatches(List<String> keepLowerCase) {
-    List<String> partialMatches = [];
-
-    keepLowerCase.forEach((particle) {
-      List<String> particleSubstrings = _generateParticleSubstrings(particle);
-      partialMatches.addAll(particleSubstrings);
-    });
-    return partialMatches;
-  }
-
-  List<String> _generateParticleSubstrings(String particle) {
-    List<String> particleSubstrings = [];
-    List<String> particleLetters = particle.split('');
-    for (int i = particleLetters.length; i >= 1; i--) {
-      String substring = particleLetters.sublist(0, i).join();
-      particleSubstrings.add(substring);
-    }
-    return particleSubstrings;
-  }
+  final _partialParticleMatches =
+      NameInputFormatterHelpers.partialParticleMatches;
 
   static String uppercaseAfterSpecialChar(String input, String specialChar,
       {List<String> exceptions = const []}) {

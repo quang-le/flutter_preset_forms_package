@@ -1,8 +1,27 @@
-import 'package:preset_form_fields/src/field.dart';
-import 'package:preset_form_fields/src/utils/sanitize.dart';
-import 'package:preset_form_fields/src/validate.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+
+class NameInputFormatterHelpers {
+  static List<String> partialParticleMatches(List<String> keepLowerCase) {
+    List<String> partialMatches = [];
+
+    keepLowerCase.forEach((particle) {
+      List<String> particleSubstrings = generateParticleSubstrings(particle);
+      partialMatches.addAll(particleSubstrings);
+    });
+    return partialMatches;
+  }
+
+  static List<String> generateParticleSubstrings(String particle) {
+    List<String> particleSubstrings = [];
+    List<String> particleLetters = particle.split('');
+    for (int i = particleLetters.length; i >= 1; i--) {
+      String substring = particleLetters.sublist(0, i).join();
+      particleSubstrings.add(substring);
+    }
+    return particleSubstrings;
+  }
+}
 
 class Convert {
   // returns null if empty/null input or parse not possible
@@ -20,6 +39,7 @@ class Convert {
   }
 }
 
+///TEST: at widget level
 class TextHelpers {
   // use with onChanged to keep cursor at end of text
   static void placeCursorAtEndOfText(
