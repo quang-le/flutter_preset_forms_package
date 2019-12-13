@@ -84,7 +84,7 @@ class _PhoneFormFieldState extends State<PhoneFormField> {
 
   Future<List<Country>> _fetchCountryData() async {
     var list = await DefaultAssetBundle.of(context)
-        .loadString('assets/countries.json');
+        .loadString('packages/preset_form_fields/assets/countries.json');
     var jsonList = json.decode(list);
     List<Country> elements = [];
     jsonList.forEach((s) {
