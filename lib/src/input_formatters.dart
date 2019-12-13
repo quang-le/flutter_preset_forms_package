@@ -19,32 +19,6 @@ class NameInputFormatter extends TextInputFormatter {
   final _partialParticleMatches =
       NameInputFormatterHelpers.partialParticleMatches;
 
-  static String uppercaseAfterSpecialChar(String input, String specialChar,
-      {List<String> exceptions = const []}) {
-    if (input == null || input.length == 0) return input;
-    if (!input.contains(specialChar)) return input;
-
-    List<String> parts = input.split(specialChar);
-    List<String> transformed = List<String>.from(parts.map((part) {
-      if (part.length >= 2) {
-        if (!exceptions.contains(part) && part[1] != "’")
-          return firstLetterToUpperCase(part);
-      } else if (!exceptions.contains(part)) {
-        return firstLetterToUpperCase(part);
-      }
-      return part;
-    }));
-    String result = transformed.join(specialChar);
-    return result;
-  }
-
-  static String firstLetterToUpperCase(String input) {
-    if (input == null || input.length == 0) return input;
-    String firstLetter = input[0].toUpperCase();
-    String upperCaseFirstLetter = input.replaceRange(0, 1, firstLetter);
-    return upperCaseFirstLetter;
-  }
-
   @override
   //TODO make authorize special char programmable via authorized list
 
@@ -58,21 +32,25 @@ class NameInputFormatter extends TextInputFormatter {
         !input.contains('-') &&
         !input.contains("’") &&
         !exceptions.contains(input)) {
-      String upperCaseFirstLetter = firstLetterToUpperCase(input);
+      String upperCaseFirstLetter =
+          FormatterHelpers.firstLetterToUpperCase(input);
       return TextEditingValue(text: upperCaseFirstLetter);
     }
 
     // TODO pass char list i.o hard code chars
     String formattedName = input;
     if (input.contains('-'))
-      formattedName =
-          uppercaseAfterSpecialChar(formattedName, '-', exceptions: exceptions);
+      formattedName = FormatterHelpers.uppercaseAfterSpecialChar(
+          formattedName, '-',
+          exceptions: exceptions);
     if (input.contains("’"))
-      formattedName =
-          uppercaseAfterSpecialChar(formattedName, "’", exceptions: exceptions);
+      formattedName = FormatterHelpers.uppercaseAfterSpecialChar(
+          formattedName, "’",
+          exceptions: exceptions);
     if (input.contains(' '))
-      formattedName =
-          uppercaseAfterSpecialChar(formattedName, ' ', exceptions: exceptions);
+      formattedName = FormatterHelpers.uppercaseAfterSpecialChar(
+          formattedName, ' ',
+          exceptions: exceptions);
     return TextEditingValue(text: formattedName);
   }
 }
@@ -139,14 +117,14 @@ class CountryInputFormatter extends TextInputFormatter {
 
     if (!input.contains(' ')) {
       String upperCaseFirstLetter =
-          NameInputFormatter.firstLetterToUpperCase(input);
+          FormatterHelpers.firstLetterToUpperCase(input);
       return TextEditingValue(text: upperCaseFirstLetter);
     }
 
     String formattedName = input;
     if (input.contains(' '))
       formattedName =
-          NameInputFormatter.uppercaseAfterSpecialChar(formattedName, ' ');
+          FormatterHelpers.uppercaseAfterSpecialChar(formattedName, ' ');
     return TextEditingValue(text: formattedName);
   }
 }

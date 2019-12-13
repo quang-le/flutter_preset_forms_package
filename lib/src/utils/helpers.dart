@@ -1,6 +1,34 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
+class FormatterHelpers {
+  static String firstLetterToUpperCase(String input) {
+    if (input == null || input.length == 0) return input;
+    String firstLetter = input[0].toUpperCase();
+    String upperCaseFirstLetter = input.replaceRange(0, 1, firstLetter);
+    return upperCaseFirstLetter;
+  }
+
+  static String uppercaseAfterSpecialChar(String input, String specialChar,
+      {List<String> exceptions = const []}) {
+    if (input == null || input.length == 0) return input;
+    if (!input.contains(specialChar)) return input;
+
+    List<String> parts = input.split(specialChar);
+    List<String> transformed = List<String>.from(parts.map((part) {
+      if (part.length >= 2) {
+        if (!exceptions.contains(part) && part[1] != "’")
+          return firstLetterToUpperCase(part);
+      } else if (!exceptions.contains(part)) {
+        return firstLetterToUpperCase(part);
+      }
+      return part;
+    }));
+    String result = transformed.join(specialChar);
+    return result;
+  }
+}
+
 class NameInputFormatterHelpers {
   static List<String> partialParticleMatches(List<String> keepLowerCase) {
     List<String> partialMatches = [];
