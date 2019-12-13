@@ -127,8 +127,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: aa50020762dd069d7ec02fc47b194e30f1ac249a
-      resolved-ref: aa50020762dd069d7ec02fc47b194e30f1ac249a
+      ref: cd4dbc7728efb365f08cf2a19dd973abba34d866
+      resolved-ref: cd4dbc7728efb365f08cf2a19dd973abba34d866
       url: "git://github.com/quang-le/flutter_preset_forms_package.git"
     source: git
     version: "1.0.0+1"
