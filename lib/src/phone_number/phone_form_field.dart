@@ -93,14 +93,14 @@ class _PhoneFormFieldState extends State<PhoneFormField> {
           name: elem['en_short_name'],
           code: elem['alpha_2_code'],
           dialCode: elem['dial_code'],
-          flagUri: 'assets/flags/${elem['alpha_2_code'].toLowerCase()}.png'));
+          flagUri:
+              'packages/preset_form_fields/assets/flags/${elem['alpha_2_code'].toLowerCase()}.png'));
     });
     return elements;
   }
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
