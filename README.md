@@ -21,8 +21,11 @@ I first developed this package as an app on [this repo](https://github.com/quang
 
 ## To do before release
 
-- Create example app
-- Create unit tests
+[X] Create example app
+
+[] Create unit tests
+
+[] Fix DropDownList screen location
 
 ## Credits
 
