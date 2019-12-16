@@ -45,6 +45,7 @@ class Validate {
     int day = int.tryParse(dayString), month = int.tryParse(monthString);
     double year = double.tryParse(yearString);
 
+    if (day == null || month == null || year == null) return null;
     if (day > 31) return null;
     if (month > 12) return null;
     if (year % 4 == 0 && month == 2 && day > 29) return null;
@@ -75,7 +76,7 @@ class Validate {
       if (dateAndMonthValuesInRange == null) return 'Date not in range';
       DateTime date = Validate.toDate(dateAndMonthValuesInRange);
       if (date != null) return null;
-
+      if (dateFormat == DateFormat.us) return 'Please use mm/dd/yyyy format';
       return 'Please use dd/mm/yyyy format';
     }
 
