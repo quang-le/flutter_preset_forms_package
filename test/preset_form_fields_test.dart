@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:preset_form_fields/preset_form_fields.dart';
 import 'package:preset_form_fields/src/validate.dart';
 
 void main() {
@@ -11,15 +12,18 @@ void main() {
       bool randomCapitalLetters =
           Validate.isValidEmail('deV.Flutter@ComPanNY.coM');
       bool numbers = Validate.isValidEmail('dev1@company2.com');
+      // should this return true?
+      bool accentsAndUmlauts = Validate.isValidEmail('dév@cömpany.ùñiquè.com');
       List<bool> result = [
         classicAddress,
         usernameWithDot,
         domainNameWithDot,
         longTld,
         randomCapitalLetters,
-        numbers
+        numbers,
+        accentsAndUmlauts
       ];
-      expect(result, [true, true, true, true, true, true]);
+      expect(result, [true, true, true, true, true, true, true]);
     });
 
     test("email with invalid input", () {
@@ -28,8 +32,7 @@ void main() {
       bool missingTldWithDot = Validate.isValidEmail('dev@company.');
       bool invalidCharacters = Validate.isValidEmail(
           'dev&!+()[]{}|=/:;,\$?*``><#@#/.:;?,*\$)(~~=+}{[]!&');
-      // should this return true?
-      bool accentsAndUmlauts = Validate.isValidEmail('dév@cömpany.ùñiquè.com');
+
       bool twoAt = Validate.isValidEmail('dev@company@flutter.com');
       bool justNumbers = Validate.isValidEmail('12347809978');
       List<bool> result = [
@@ -37,11 +40,101 @@ void main() {
         missingTld,
         missingTldWithDot,
         invalidCharacters,
-        accentsAndUmlauts,
         twoAt,
         justNumbers
       ];
-      expect(result, [false, false, false, false, false, false, false]);
+      expect(result, [false, false, false, false, false, false]);
+    });
+  });
+
+  group('Date validation', () {
+    String eurDate = '09/11/1989';
+    String usDate = '11/09/1989';
+    String wrongValueDateEur = '32/14/4500';
+    String wrongValueDateUs = '14/32/4500';
+    String tooLongUs = '11/09/19899';
+    String tooLongEur = '09/11/198999';
+    String tooShortUs = '11/09';
+    String tooShortEur = '09/11';
+    String randomChars = '&é/:;?%@#<';
+    String letters = 'is this OK';
+    String numbers = '1234567890';
+    String wrongFormat = '09/111/989';
+    String correctIsoString = '1989-11-09 00:00:00Z';
+    String wrongValueDateIsoString = '4500-14-32 00:00:00Z';
+    String randomIsoString = '&é:;-?%-#< 00:00:00Z';
+    String lettersIsoString = 's OK-th-is 00:00:00Z';
+    String leapYearIsoString = '2000-02-29 00:00:00Z';
+    String feb29IsoString = '2001-02-29 00:00:00Z';
+    String feb30LeapIsoString = '2000-02-30 00:00:00Z';
+    String april31IsoString = '2001-04-31 00:00:00Z';
+
+    test(': convert user input to ISO string', () {
+      List<String> result = [];
+      result.add(Validate.toIsoString(eurDate, DateFormat.eur));
+      result.add(Validate.toIsoString(usDate, DateFormat.us));
+      result.add(Validate.toIsoString(wrongValueDateEur, DateFormat.eur));
+      result.add(Validate.toIsoString(wrongValueDateUs, DateFormat.us));
+
+      expect(result, [
+        correctIsoString,
+        correctIsoString,
+        wrongValueDateIsoString,
+        wrongValueDateIsoString
+      ]);
+    });
+    test(': convert input returns null on incorrect input length', () {
+      List<String> result = [];
+      result.add(Validate.toIsoString(tooLongUs, DateFormat.us));
+      result.add(Validate.toIsoString(tooLongEur, DateFormat.eur));
+      result.add(Validate.toIsoString(tooShortUs, DateFormat.us));
+      result.add(Validate.toIsoString(tooShortEur, DateFormat.eur));
+
+      expect(result, [null, null, null, null]);
+    });
+    test(': return string if input length = 10, regardless of input', () {
+      List<bool> result = [];
+      result.add(Validate.toIsoString(randomChars, DateFormat.us) is String);
+      result.add(Validate.toIsoString(letters, DateFormat.us) is String);
+      result.add(Validate.toIsoString(numbers, DateFormat.us) is String);
+      result.add(Validate.toIsoString(wrongFormat, DateFormat.us) is String);
+      expect(result, [true, true, true, true]);
+    });
+    test(': check ISO string date is a real date', () {
+      List<String> result = [];
+      result.add(Validate.checkDateStringFormatting(correctIsoString));
+      result.add(Validate.checkDateStringFormatting(leapYearIsoString));
+      result.add(Validate.checkDateStringFormatting(wrongValueDateIsoString));
+      result.add(Validate.checkDateStringFormatting(randomIsoString));
+      result.add(Validate.checkDateStringFormatting(lettersIsoString));
+      result.add(Validate.checkDateStringFormatting(feb29IsoString));
+      result.add(Validate.checkDateStringFormatting(feb30LeapIsoString));
+      result.add(Validate.checkDateStringFormatting(april31IsoString));
+
+      expect(result, [
+        correctIsoString,
+        leapYearIsoString,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]);
+    });
+    test(': parse ISO string to DateTime object', () {
+      //DateTime.parse doesn't check the validity of the date
+      //just the correct formatting of the string
+      List result = [];
+      result.add(Validate.toDate(correctIsoString) is DateTime);
+      result.add(Validate.toDate(leapYearIsoString) is DateTime);
+      result.add(Validate.toDate(feb29IsoString) is DateTime);
+      result.add(Validate.toDate(feb30LeapIsoString) is DateTime);
+      result.add(Validate.toDate(april31IsoString) is DateTime);
+      result.add(Validate.toDate(wrongValueDateIsoString) is DateTime);
+      result.add(Validate.toDate(randomIsoString) is DateTime);
+      result.add(Validate.toDate(lettersIsoString) is DateTime);
+      expect(result, [true, true, true, true, true, true, false, false]);
     });
   });
 }
