@@ -83,7 +83,7 @@ void main() {
         wrongValueDateIsoString
       ]);
     });
-    test(': convert input returns null on incorrect input length', () {
+    test(': ISO String conversion returns null on incorrect input length', () {
       List<String> result = [];
       result.add(Validate.toIsoString(tooLongUs, DateFormat.us));
       result.add(Validate.toIsoString(tooLongEur, DateFormat.eur));
@@ -123,6 +123,9 @@ void main() {
       ]);
     });
     test(': parse ISO string to DateTime object', () {
+      ///DO WE NEED THIS TEST? SUCCESS CONDITIONS ARE THE SAME AS
+      ///ISO STRING CONVERSION
+
       //DateTime.parse doesn't check the validity of the date
       //just the correct formatting of the string
       List result = [];
@@ -135,6 +138,37 @@ void main() {
       result.add(Validate.toDate(randomIsoString) is DateTime);
       result.add(Validate.toDate(lettersIsoString) is DateTime);
       expect(result, [true, true, true, true, true, true, false, false]);
+    });
+    test(': validator', () {
+      List<String> result = [];
+      result.add(Validate.date(DateFormat.eur)(eurDate));
+      result.add(Validate.date(DateFormat.us)(usDate));
+      result.add(Validate.date(DateFormat.eur)('29/02/2000'));
+      result.add(Validate.date(DateFormat.eur)(wrongValueDateEur));
+      result.add(Validate.date(DateFormat.us)(wrongValueDateUs));
+      result.add(Validate.date(DateFormat.eur)(tooShortEur));
+      result.add(Validate.date(DateFormat.us)(tooShortUs));
+      result.add(Validate.date(DateFormat.eur)(wrongFormat));
+      result.add(Validate.date(DateFormat.eur)(letters));
+      result.add(Validate.date(DateFormat.eur)(numbers));
+      result.add(Validate.date(DateFormat.eur)(randomChars));
+      result.add(Validate.date(DateFormat.eur)('30/02/2000'));
+      result.add(Validate.date(DateFormat.eur)('29/02/2001'));
+      expect(result, [
+        null,
+        null,
+        null,
+        'Date not in range',
+        'Date not in range',
+        'Formatting Error',
+        'Formatting Error',
+        'Date not in range',
+        'Date not in range',
+        'Date not in range',
+        'Date not in range',
+        'Date not in range',
+        'Date not in range',
+      ]);
     });
   });
 }

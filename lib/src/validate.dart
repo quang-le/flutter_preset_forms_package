@@ -70,7 +70,7 @@ class Validate {
   static Function date(DateFormat dateFormat) {
     String validator(String value) {
       String formattedForParsing = Validate.toIsoString(value, dateFormat);
-      if (formattedForParsing == null) return 'Format Error';
+      if (formattedForParsing == null) return 'Formatting Error';
       String dateAndMonthValuesInRange =
           Validate.checkDateStringFormatting(formattedForParsing);
       if (dateAndMonthValuesInRange == null) return 'Date not in range';
