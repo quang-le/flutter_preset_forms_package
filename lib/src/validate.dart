@@ -70,10 +70,12 @@ class Validate {
   static Function date(DateFormat dateFormat) {
     String validator(String value) {
       String formattedForParsing = Validate.toIsoString(value, dateFormat);
-      if (formattedForParsing == null) return 'Formatting Error';
+      if (formattedForParsing == null)
+        return "Can't convert date to ISO String";
       String dateAndMonthValuesInRange =
           Validate.checkDateStringFormatting(formattedForParsing);
-      if (dateAndMonthValuesInRange == null) return 'Date not in range';
+      if (dateAndMonthValuesInRange == null)
+        return 'Incorrect day or month value';
       DateTime date = Validate.toDate(dateAndMonthValuesInRange);
       if (date != null) return null;
       if (dateFormat == DateFormat.us) return 'Please use mm/dd/yyyy format';
@@ -102,12 +104,11 @@ class Validate {
   }
 
   static Function makePhoneValidator(String countryCode, String errorMsg) {
-    String phoneValidator(String value) {
-      PhoneService.parsePhoneNumber(value, countryCode).then((isValid) {
-        if (!isValid) return errorMsg;
-        return null;
-      });
-      //TODO review this code potential async bugs
+    Future<String> phoneValidator(String value) async {
+      bool isValid = await PhoneService.parsePhoneNumber(value, countryCode);
+      print("received async data");
+      if (!isValid) return errorMsg;
+      print("valid number");
       return null;
     }
 
