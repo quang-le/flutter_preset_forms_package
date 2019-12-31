@@ -108,36 +108,39 @@ class _PhoneFormFieldState extends State<PhoneFormField> {
         children: <Widget>[
           Expanded(
             flex: 1,
-            child: custom.DropdownButtonFormField<Country>(
-              height: widget.dropDownListHeight,
-              value: selectedItem,
-              onChanged: (Country newValue) {
-                setState(() {
-                  selectedItem = newValue;
-                });
-              },
-              items: itemList
-                  .map<custom.DropdownMenuItem<Country>>((Country value) {
-                return custom.DropdownMenuItem<Country>(
-                  value: value,
-                  child: Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Image(
-                            image: AssetImage(
-                              value.flagUri,
-                            ),
-                            //TODO Adjust height dynamically
-                            width: 25.0,
-                            height: 15.0),
-                        SizedBox(width: 15),
-                        Text(value.dialCode)
-                      ],
+            child: ButtonTheme(
+              alignedDropdown: true,
+              child: custom.DropdownButtonFormField<Country>(
+                height: widget.dropDownListHeight,
+                value: selectedItem,
+                onChanged: (Country newValue) {
+                  setState(() {
+                    selectedItem = newValue;
+                  });
+                },
+                items: itemList
+                    .map<custom.DropdownMenuItem<Country>>((Country value) {
+                  return custom.DropdownMenuItem<Country>(
+                    value: value,
+                    child: Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Image(
+                              image: AssetImage(
+                                value.flagUri,
+                              ),
+                              //TODO Adjust height dynamically
+                              width: 25.0,
+                              height: 15.0),
+                          SizedBox(width: 15),
+                          Text(value.dialCode)
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              }).toList(),
+                  );
+                }).toList(),
+              ),
             ),
           ),
           Expanded(
