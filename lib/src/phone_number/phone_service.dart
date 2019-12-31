@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:preset_form_fields/src/country/country.dart';
 import 'package:flutter/material.dart';
 import 'package:libphonenumber/libphonenumber.dart';

@@ -3,6 +3,7 @@ import 'package:preset_form_fields/preset_form_fields.dart';
 import 'package:preset_form_fields/src/validate.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   group("validate email string", () {
     test("email with valid input", () {
       bool classicAddress = Validate.isValidEmail('developer@company.com');
@@ -158,17 +159,26 @@ void main() {
         null,
         null,
         null,
-        'Date not in range',
-        'Date not in range',
-        'Formatting Error',
-        'Formatting Error',
-        'Date not in range',
-        'Date not in range',
-        'Date not in range',
-        'Date not in range',
-        'Date not in range',
-        'Date not in range',
+        'Incorrect day or month value',
+        'Incorrect day or month value',
+        "Can't convert date to ISO String",
+        "Can't convert date to ISO String",
+        'Incorrect day or month value',
+        'Incorrect day or month value',
+        'Incorrect day or month value',
+        'Incorrect day or month value',
+        'Incorrect day or month value',
+        'Incorrect day or month value',
       ]);
     });
   });
+  /* group('phone validation', () {
+    //TODO: figure out how to pass async test
+    test(': validator function', () async {
+      Future<String> Function(String) validator =
+          Validate.makePhoneValidator('+32', 'this error');
+      String result = await validator('477556677');
+      expect(result, null);
+    });
+  });*/
 }
