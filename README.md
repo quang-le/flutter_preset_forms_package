@@ -25,7 +25,10 @@ I first developed this package as an app on [this repo](https://github.com/quang
 
 [] Create unit tests
 
-[] Fix DropDownList screen location
+[X] Fix DropDownList screen location
+
+[X] Update date error messages
+[X] Align flags and country codes in phone field
 
 ## Credits
 
