@@ -26,7 +26,7 @@ dependencies:
   preset_form_fields:
     git:
       url: git://github.com/quang-le/flutter_preset_forms_package.git
-      ref: dbfe70df0a2570a6b1d24c56d62a81c3ab2bdf20
+      ref: fa12dd1de2b469900322fdf8ba15fca6516efc0e
 
 dev_dependencies:
   flutter_test:
